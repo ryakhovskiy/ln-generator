@@ -8,7 +8,6 @@ namespace ln_generator
         {
             InitializeComponent();
             leistungsnachweisOutputDirTextBox.Text = Directory.GetCurrentDirectory();
-            Console.WriteLine("test");
 #if DEBUG
             leistungsnachweisOutputDirTextBox.Text = "C:\\Users\\k.ryakhovskiy\\Desktop\\LNTest";
 #endif
@@ -22,6 +21,7 @@ namespace ln_generator
             progressLabel.Visible = !enabled;
             mainBackgroundWorker.WorkerReportsProgress = !enabled;
             generateBackgroundWorker.WorkerReportsProgress = !enabled;
+            myteValidationBackgroundWorker.WorkerReportsProgress = !enabled;
         }
 
         private void loadComponents()
@@ -87,11 +87,6 @@ namespace ln_generator
         private void doAvailabilityTrackerLoad()
         {
             loadComponents();
-        }
-
-        private void employeeSelectionListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void generateButton_Click(object sender, EventArgs e)

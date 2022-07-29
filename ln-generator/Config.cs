@@ -75,7 +75,7 @@ namespace ln_generator
                 return;
             this.PONumber = poNum;
 
-            this.Year = readExcelWorksheetIntValue(ws, 2, 2, "Year should be given in the cell B2 of the worksheet 'Tracker'");
+            this.Year = ExcelHelper.readExcelWorksheetIntValue(ws, 2, 2, "Year should be given in the cell B2 of the worksheet 'Tracker'");
             bw.ReportProgress(0, "Loading employee data...");
             loadEmployees(ws);
         }
@@ -108,13 +108,13 @@ namespace ln_generator
                 Dictionary<int, double> workingdays = new Dictionary<int, double>(31);
                 for (int colIndex = m.StartColumn; colIndex <= m.EndColumn; colIndex++)
                 {
-                    String dayOfWeek = readExcelWorksheetStringValue(ws, 4, colIndex);
+                    String dayOfWeek = ExcelHelper.readExcelWorksheetStringValue(ws, 4, colIndex);
                     //satarday and sunday - non-working days
                     if (dayOfWeek.ToLower().StartsWith("sat") || dayOfWeek.ToLower().StartsWith("sun")) continue;
-                    int day = readExcelWorksheetIntValue(ws, 3, colIndex, 
+                    int day = ExcelHelper.readExcelWorksheetIntValue(ws, 3, colIndex, 
                         String.Format("Cannot read day number in the row [{0}] and column [{1}]", 3, colIndex));
                     
-                    double w = readExcelWorksheetDoubleValue(ws, employeeRow, colIndex,
+                    double w = ExcelHelper.readExcelWorksheetDoubleValue(ws, employeeRow, colIndex,
                         String.Format("Cannot read value in the row [{0}] and column [{1}]", employeeRow, colIndex));
                     double hours = w * 8;
                     workingdays.Add(day, hours);
@@ -153,9 +153,9 @@ namespace ln_generator
 
         private void loadConfig(Worksheet ws)
         {
-            this.FirstDataRowIndex = readExcelWorksheetIntValue(ws, 2, 1, 
+            this.FirstDataRowIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, 1, 
                 "Tab Config should have integer value in the cell A2 which represents the first data row on the Tracker worksheet");
-            this.EmployeeColumnIndex = readExcelWorksheetIntValue(ws, 2, 7,
+            this.EmployeeColumnIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, 7,
                 "Tab Config should have integer value in the cell G2 which represents the Employee Name column index on the Tracker worksheet");
             this.monthConfigs = readMonths(ws);
         }
@@ -178,7 +178,7 @@ namespace ln_generator
 
                 if (null != o)
                 {
-                    monthStartColumnIndex = ColumnLetterToColumnIndex(o.ToString());
+                    monthStartColumnIndex = ExcelHelper.ColumnLetterToColumnIndex(o.ToString());
                 }
                 else
                 {
@@ -190,7 +190,7 @@ namespace ln_generator
                 o = ws.Cells[rowIndex, 5].Value;
                 if (null != o)
                 {
-                    monthEndColumnIndex = ColumnLetterToColumnIndex(o.ToString()); 
+                    monthEndColumnIndex = ExcelHelper.ColumnLetterToColumnIndex(o.ToString()); 
                 }
                 else
                 {
@@ -210,63 +210,6 @@ namespace ln_generator
                 rowIndex++;
             }
             return monthConfigs;
-        }
-
-        private int readExcelWorksheetIntValue(Worksheet ws, int rowIndex, int colIndex, string error)
-        {
-            int res;
-            object o = ws.Cells[rowIndex, colIndex].Value;
-            if (null != o && int.TryParse(o.ToString(), out res))
-            {
-                return res;
-            }
-            else
-            {
-                MessageBox.Show(error, "Availability Tracker Bad Format", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw new ApplicationException(error);
-            }
-        }
-
-        private double readExcelWorksheetDoubleValue(Worksheet ws, int rowIndex, int colIndex, string error)
-        {
-            double res;
-            object o = ws.Cells[rowIndex, colIndex].Value;
-            if (null != o && double.TryParse(o.ToString(), out res))
-            {
-                return res;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        private string readExcelWorksheetStringValue(Worksheet ws, int rowIndex, int colIndex)
-        {
-            object o = ws.Cells[rowIndex, colIndex].Value;
-            if (null != o)
-            {
-                return o.ToString();
-            }
-            else
-            {
-                return String.Empty;
-            }
-        }
-
-        private int ColumnLetterToColumnIndex(string columnLetter)
-        {
-            if (String.IsNullOrEmpty(columnLetter)) return -1;
-            columnLetter = columnLetter.ToUpper();
-            int sum = 0;
-
-            for (int i = 0; i < columnLetter.Length; i++)
-            {
-                sum *= 26;
-                sum += (columnLetter[i] - 'A' + 1);
-            }
-            return sum;
         }
     }
 

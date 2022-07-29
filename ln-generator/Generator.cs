@@ -31,7 +31,6 @@ namespace ln_generator
         private readonly int yearRowIndex = 5;
         private readonly int yearColumnIndex = 3;
 
-        private readonly Dictionary<string, int> monthsNum = new Dictionary<string, int>();
         private readonly Dictionary<string, Employee> employeesDict;
 
         private Generator() { }
@@ -46,18 +45,6 @@ namespace ln_generator
             this.config = config;
             this.outputDir = outputDir;
             this.template = createTemplate();
-            monthsNum.Add("January", 1);
-            monthsNum.Add("February", 2);
-            monthsNum.Add("March", 3);
-            monthsNum.Add("April", 4);
-            monthsNum.Add("May", 5);
-            monthsNum.Add("June", 6);
-            monthsNum.Add("July", 7);
-            monthsNum.Add("August", 8);
-            monthsNum.Add("September", 9);
-            monthsNum.Add("October", 10);
-            monthsNum.Add("November", 11);
-            monthsNum.Add("December", 12);
             this.employeesDict = config.GetEmployeesConfig();
         }
 
@@ -80,9 +67,7 @@ namespace ln_generator
                     Dictionary<int, double> workingDays = monthData.getWorkingDays();
                     if (workingDays.Values.Sum() == 0) continue;
 
-                    int monthNum = 0;
-                    bool got = monthsNum.TryGetValue(month, out monthNum);
-                    if (!got) throw new Exception("Wrong month: " + month);
+                    int monthNum = DateHelper.GetMonthNumber(month);
                     string monthDir = String.Format("{0} - {1}", monthNum, month);
                     string outputDirFullPath = Path.Combine(outputDir, monthDir);
                     string outputFileFullPath = CopyTemplate(templateDefaultPath, outputDirFullPath, employee, month);
@@ -102,7 +87,7 @@ namespace ln_generator
 
         private void CopyData(string filename, string employee, string month, Dictionary<int, double> workingDays)
         {
-            int monthNum = getMonthNum(month);
+            int monthNum = DateHelper.GetMonthNumber(month);
             Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
             Worksheet ws = null;
             Workbook wb = null;
@@ -147,11 +132,6 @@ namespace ln_generator
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(wb);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
             }
-        }
-
-        private int getMonthNum(string month)
-        {
-            return monthsNum.GetValueOrDefault(month, 0);
         }
 
         private string createTemplate()
