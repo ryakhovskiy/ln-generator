@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             this.mainTabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.leistungsnachweisGeneratorTab = new System.Windows.Forms.TabPage();
             this.lnGroupBox = new System.Windows.Forms.GroupBox();
             this.progressLabel = new System.Windows.Forms.Label();
             this.mainProgressBar = new System.Windows.Forms.ProgressBar();
@@ -49,51 +48,35 @@
             this.monthComboBox = new System.Windows.Forms.ComboBox();
             this.monthLabel = new System.Windows.Forms.Label();
             this.yearLabel = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.validateAvailabilityTrackerTabPage = new System.Windows.Forms.TabPage();
             this.mainBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.generateBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.mainTabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.leistungsnachweisGeneratorTab.SuspendLayout();
             this.lnGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTabControl
             // 
-            this.mainTabControl.Controls.Add(this.tabPage1);
-            this.mainTabControl.Controls.Add(this.tabPage2);
+            this.mainTabControl.Controls.Add(this.leistungsnachweisGeneratorTab);
+            this.mainTabControl.Controls.Add(this.validateAvailabilityTrackerTabPage);
             this.mainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTabControl.Location = new System.Drawing.Point(0, 0);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
-            this.mainTabControl.Size = new System.Drawing.Size(935, 657);
+            this.mainTabControl.Size = new System.Drawing.Size(915, 660);
             this.mainTabControl.TabIndex = 0;
             // 
-            // tabPage1
+            // leistungsnachweisGeneratorTab
             // 
-            this.tabPage1.Controls.Add(this.splitContainer1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(927, 624);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Simple";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.lnGroupBox);
-            this.splitContainer1.Size = new System.Drawing.Size(921, 618);
-            this.splitContainer1.SplitterDistance = 892;
-            this.splitContainer1.TabIndex = 10;
+            this.leistungsnachweisGeneratorTab.Controls.Add(this.lnGroupBox);
+            this.leistungsnachweisGeneratorTab.Location = new System.Drawing.Point(4, 29);
+            this.leistungsnachweisGeneratorTab.Name = "leistungsnachweisGeneratorTab";
+            this.leistungsnachweisGeneratorTab.Padding = new System.Windows.Forms.Padding(3);
+            this.leistungsnachweisGeneratorTab.Size = new System.Drawing.Size(907, 627);
+            this.leistungsnachweisGeneratorTab.TabIndex = 0;
+            this.leistungsnachweisGeneratorTab.Text = "Leistungsnachweis Generator";
+            this.leistungsnachweisGeneratorTab.UseVisualStyleBackColor = true;
             // 
             // lnGroupBox
             // 
@@ -115,9 +98,9 @@
             this.lnGroupBox.Controls.Add(this.monthLabel);
             this.lnGroupBox.Controls.Add(this.yearLabel);
             this.lnGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lnGroupBox.Location = new System.Drawing.Point(0, 0);
+            this.lnGroupBox.Location = new System.Drawing.Point(3, 3);
             this.lnGroupBox.Name = "lnGroupBox";
-            this.lnGroupBox.Size = new System.Drawing.Size(892, 618);
+            this.lnGroupBox.Size = new System.Drawing.Size(901, 621);
             this.lnGroupBox.TabIndex = 9;
             this.lnGroupBox.TabStop = false;
             this.lnGroupBox.Text = "Leistungsnachweis Data";
@@ -273,15 +256,15 @@
             this.yearLabel.TabIndex = 4;
             this.yearLabel.Text = "Year";
             // 
-            // tabPage2
+            // validateAvailabilityTrackerTabPage
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1224, 593);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.validateAvailabilityTrackerTabPage.Location = new System.Drawing.Point(4, 29);
+            this.validateAvailabilityTrackerTabPage.Name = "validateAvailabilityTrackerTabPage";
+            this.validateAvailabilityTrackerTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.validateAvailabilityTrackerTabPage.Size = new System.Drawing.Size(927, 624);
+            this.validateAvailabilityTrackerTabPage.TabIndex = 1;
+            this.validateAvailabilityTrackerTabPage.Text = "Validate Availability Tracker and Time Report";
+            this.validateAvailabilityTrackerTabPage.UseVisualStyleBackColor = true;
             // 
             // mainBackgroundWorker
             // 
@@ -300,15 +283,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(935, 657);
+            this.ClientSize = new System.Drawing.Size(915, 660);
             this.Controls.Add(this.mainTabControl);
             this.Name = "MainForm";
             this.Text = "Leistungsnachweis Generator";
             this.mainTabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.leistungsnachweisGeneratorTab.ResumeLayout(false);
             this.lnGroupBox.ResumeLayout(false);
             this.lnGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -318,8 +298,8 @@
         #endregion
 
         private TabControl mainTabControl;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private TabPage leistungsnachweisGeneratorTab;
+        private TabPage validateAvailabilityTrackerTabPage;
         private TextBox projectPONumberTextBox;
         private Label projectPONumLabel;
         private ComboBox yearComboBox;
@@ -327,7 +307,6 @@
         private Label yearLabel;
         private Label monthLabel;
         private GroupBox lnGroupBox;
-        private SplitContainer splitContainer1;
         private Label label1;
         private Button availabilityTrackerFileButton;
         private TextBox availabilityTrackerFileTextBox;

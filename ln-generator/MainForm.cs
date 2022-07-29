@@ -7,6 +7,7 @@ namespace ln_generator
         public MainForm()
         {
             InitializeComponent();
+            leistungsnachweisOutputDirTextBox.Text = Directory.GetCurrentDirectory();
             Console.WriteLine("test");
 #if DEBUG
             leistungsnachweisOutputDirTextBox.Text = "C:\\Users\\k.ryakhovskiy\\Desktop\\LNTest";
