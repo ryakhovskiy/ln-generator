@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
 
+
 namespace ln_generator
 {
     public class Config
@@ -16,6 +17,8 @@ namespace ln_generator
         {
             return instance;
         }
+
+        private WorkingHoursConfig workingHoursConfig = new WorkingHoursConfig(Constants.DEFAULT_WORKING_HOURS);
 
         private BackgroundWorker bw = new BackgroundWorker();
 
@@ -116,8 +119,12 @@ namespace ln_generator
                     
                     double w = ExcelHelper.readExcelWorksheetDoubleValue(ws, employeeRow, colIndex,
                         String.Format("Cannot read value in the row [{0}] and column [{1}]", employeeRow, colIndex));
-                    double hours = w * 8;
-                    workingdays.Add(day, hours);
+                    if (0 == w) workingdays.Add(day, w);
+                    else
+                    {
+                        double hours = w * workingHoursConfig.getWorkingHours(e.Name);
+                        workingdays.Add(day, hours);
+                    }
                 }
                 em.setWorkDays(workingdays);
                 eMonths.Add(m.Month, em);
@@ -153,11 +160,26 @@ namespace ln_generator
 
         private void loadConfig(Worksheet ws)
         {
-            this.FirstDataRowIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, 1, 
+            this.FirstDataRowIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, Constants.FIRST_DATA_ROW_ColumnIndex, 
                 "Tab Config should have integer value in the cell A2 which represents the first data row on the Tracker worksheet");
-            this.EmployeeColumnIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, 7,
+            this.EmployeeColumnIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, Constants.EMPLOYEEE_NAME_COLUMN_ColumnIndex,
                 "Tab Config should have integer value in the cell G2 which represents the Employee Name column index on the Tracker worksheet");
             this.monthConfigs = readMonths(ws);
+           
+            // do not load specific hours, generate always 8 hours
+            //loadSpecificEmployeeHours(ws);
+        }
+
+        private void loadSpecificEmployeeHours(Worksheet ws)
+        {
+            for (int rowIndex = 2; ; rowIndex++)
+            {
+                string name = ExcelHelper.readExcelWorksheetStringValue(ws, rowIndex, Constants.WORKING_HOURS_EMPLOYEE_NAME_ColumnIndex);
+                if (string.IsNullOrEmpty(name)) return;
+                double hours = ExcelHelper.readExcelWorksheetDoubleValue(ws, rowIndex, Constants.WORKING_HOURS_NUMBER_ColumnIndex, 
+                    String.Format("Cannot read double value for employee working hours for the employee [{0}]", name));
+                workingHoursConfig.addWorkingHours(name, hours);
+            }
         }
 
         private List<MonthConfig> readMonths(Worksheet ws)
@@ -210,6 +232,29 @@ namespace ln_generator
                 rowIndex++;
             }
             return monthConfigs;
+        }
+    }
+
+    internal class WorkingHoursConfig
+    {
+        private readonly double defaultWorkingHours;
+        private readonly Dictionary<string, double> workingHours = new Dictionary<string, double>();
+
+        internal WorkingHoursConfig(double defaultWorkingHours)
+        {
+            this.defaultWorkingHours = defaultWorkingHours;
+        }
+
+        public double getWorkingHours(string name)
+        {
+            double wh;
+            workingHours.TryGetValue(name, out wh);
+            return wh == 0 ? defaultWorkingHours : wh;
+        }
+
+        public void addWorkingHours(string name, double wh)
+        {
+            workingHours.Add(name, wh);
         }
     }
 
