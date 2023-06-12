@@ -18,6 +18,6 @@ namespace ln_generator
 
         public static readonly int WORKING_HOURS_EMPLOYEE_NAME_ColumnIndex = 9;
         public static readonly int WORKING_HOURS_NUMBER_ColumnIndex = 10;
-
+        public static readonly int TRACKER_SHEET_NAME_ColumnIndex = 9;
     }
 }

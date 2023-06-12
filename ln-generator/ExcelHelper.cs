@@ -39,6 +39,21 @@ namespace ln_generator
             }
         }
 
+        public static string readExcelWorksheetStringValue(Worksheet ws, int rowIndex, int colIndex, string error)
+        {
+            string value = readExcelWorksheetStringValue(ws, rowIndex, colIndex);
+            if (0 == value.Length)
+            {
+                MessageBox.Show(error, "Bad Format",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new ApplicationException(error);
+            }
+            else
+            {
+                return value;
+            }
+        }
+
         public static string readExcelWorksheetStringValue(Worksheet ws, int rowIndex, int colIndex)
         {
             object o = ws.Cells[rowIndex, colIndex].Value;

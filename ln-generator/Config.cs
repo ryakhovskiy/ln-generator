@@ -33,6 +33,8 @@ namespace ln_generator
         private int FirstDataRowIndex { get; set; }
         private int EmployeeColumnIndex { get; set; }
 
+        private string TrackerSheetName { get; set; }
+
         private List<MonthConfig> monthConfigs = new List<MonthConfig>();
 
         public List<MonthConfig> GetMonthConfigs() { return new List<MonthConfig>(monthConfigs); }
@@ -49,7 +51,7 @@ namespace ln_generator
                 bw.ReportProgress(0, "Loading Config");
                 loadConfig(wb.Worksheets.Item["Config"]);
                 bw.ReportProgress(0, "Loading Tracker");
-                loadMain(wb.Worksheets.Item["Tracker"]);
+                loadMain(wb.Worksheets.Item[this.TrackerSheetName]);
             }
             catch (Exception e)
             {
@@ -146,13 +148,13 @@ namespace ln_generator
             {
                 worksheetNames.Add(sheet.Name);
             }
-            if (worksheetNames.Contains("Config") && worksheetNames.Contains("Tracker"))
+            if (worksheetNames.Contains("Config"))
             {
                 return true;
             } 
             else
             {
-                MessageBox.Show("File does not contain either of sheets: 'Config' or 'Tracker'.", "Availability Tracker Bad Format", 
+                MessageBox.Show("File does not contain a sheet with the name 'Config'.", "Availability Tracker Bad Format", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -161,9 +163,12 @@ namespace ln_generator
         private void loadConfig(Worksheet ws)
         {
             this.FirstDataRowIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, Constants.FIRST_DATA_ROW_ColumnIndex, 
-                "Tab Config should have integer value in the cell A2 which represents the first data row on the Tracker worksheet");
+                "Tab Config should have an integer value in the cell A2 which represents the first data row on the Tracker worksheet");
             this.EmployeeColumnIndex = ExcelHelper.readExcelWorksheetIntValue(ws, 2, Constants.EMPLOYEEE_NAME_COLUMN_ColumnIndex,
-                "Tab Config should have integer value in the cell G2 which represents the Employee Name column index on the Tracker worksheet");
+                "Tab Config should have an integer value in the cell G2 which represents the Employee Name column index on the Tracker worksheet");
+            this.TrackerSheetName = ExcelHelper.readExcelWorksheetStringValue(ws, 2, Constants.TRACKER_SHEET_NAME_ColumnIndex,
+                 "Tab Config should have a string value in the cell I2 which represents the actual Sheet Name with the Availability Tracker data");
+
             this.monthConfigs = readMonths(ws);
            
             // do not load specific hours, generate always 8 hours
